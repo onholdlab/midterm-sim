@@ -220,7 +220,7 @@ function pick(i){if(!S.run||S.m!="fp"||S.d||S.fb)return;const q=S.qs[S.qi];if(i=
 function shq(a){const r=a.map(q=>{const o=q[1].map((t,i)=>[t,i]);for(let i=o.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[o[i],o[j]]=[o[j],o[i]]}return [q[0],o.map(x=>x[0]),o.findIndex(x=>x[1]==q[2])]});for(let i=r.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[r[i],r[j]]=[r[j],r[i]]}return r}
 function start(){S={t:100,f:100,sc:0,qi:0,m:"fp",d:null,nd:5,w:0,h:0,s:0,gi:0,run:true,qs:shq(sel?sel.q:Q).slice(0,10),sub:sel?sel.d+"｜"+sel.y+" "+sel.n:""};$("intro").hidden=true;$("res").hidden=true;clr();say("");show();ask()}
 function spawn(){const i=S.p?S.p.i:R()*D.length|0,d=D[i];S.p=null;S.d={l:4,i};S.gi=i;bub(d[0]);$("di").textContent=d[0];$("dt").textContent=d[1];$("dis").hidden=false;paint()}
-function end(e){S.run=false;S.et=performance.now();S.m="tp";show();paint();stamp();mn.lv=0;mn.c=mn.d=null;mn.q="";menu();$("res").hidden=false;const p=S.sc/S.qs.length;$("rt").innerHTML=`<h2 style="margin:0 0 6px">${e?"提早交卷！":"時間到，收卷！"}</h2><div style="font-size:56px;font-weight:800;line-height:1.1">${S.sc*10} 分</div><p>答對 ${S.sc} / ${S.qs.length} 題<br>走神 ${S.w} 次　偷看答案 ${S.cn||0} 次　逗貓棒命中 ${S.h} 次</p><p>${p>=.75?"穩！貓咪教練功不可沒。":p>=.4?"在及格邊緣，下次早點把鏡頭拉遠。":"腦中只剩窗外的風景…但你已經會把自己拉回來了。"}</p><p style="font-size:12px;opacity:.7;margin:0">⚠ 題目僅供考前暖身，難免有誤，請以授課內容為準。（可拖曳水杯潑前面的同學）</p>`}
+function end(e){S.run=false;S.et=performance.now();S.m="tp";show();paint();stamp();mn.lv=0;mn.c=mn.d=null;mn.q="";menu();$("res").hidden=false;const p=S.sc/S.qs.length;$("rt").innerHTML=`<h2 style="margin:0 0 6px">${e?"提早交卷！":"時間到，收卷！"}</h2><div style="font-size:56px;font-weight:800;line-height:1.1">${S.sc*10} 分</div><p>答對 ${S.sc} / ${S.qs.length} 題<br>走神 ${S.w} 次　偷看答案 ${S.cn||0} 次　逗貓棒命中 ${S.h} 次</p><p>${p>=.75?"穩！貓咪教練功不可沒。":p>=.4?"在及格邊緣，下次早點把鏡頭拉遠。":"腦中只剩窗外的風景…但你已經會把自己拉回來了。"}</p><p style="font-size:12px;opacity:.7;margin:0">⚠ 題目僅供考前暖身，難免有誤，請以授課內容為準。（可拖曳水杯潑同學、拖曳手機砸同學）</p>`}
 function logic(dt){if(!fm)S.t-=dt;
 if(S.m=="fp"){if(!fm)S.f-=(S.d?9:2.2)*dt;
 if(S.d){S.d.l-=dt;if(S.d.l<=0){S.f-=10;say("視線被帶走了…好不容易才拉回來");clr()}}
@@ -553,6 +553,58 @@ if((p.c+p.d+p.y+p.n).toLowerCase().includes(lo))return 80;
 if(t.length>=2&&subq(t,p.d))return 60;if(t.length>=2&&subq(t,p.d+p.y))return 55;if(t.length>=2&&subq(t,p.n))return 40;return 0}
 function srch(q){const ts=q.replace(/\s+/g," ").trim().split(" ").map(t=>t.length>1?t.replace(/系$/,""):t).filter(Boolean);
 return BANK.map((p,i)=>{let s=0;for(const t of ts){const v=tsc(t,p);if(!v)return null;s+=v}return [p,s,i]}).filter(Boolean).sort((a,b)=>b[1]-a[1]||a[2]-b[2]).filter((x,_,r)=>x[1]>=r[0][1]*.6).map(x=>x[0])}
+
+// ===== 搞笑互動：跟老師跳舞、鴿子後空翻、拿手機砸同學（5 秒後丟回來，上面寫著這題答案）=====
+// 跳舞：老師面向你一起開合跳，你的身體也跟著扭；專注力 +10，冷卻 6 秒
+const dz={t:-99,on:0};
+function dance(){const t=performance.now()/1000;if(t-dz.t<6){say("💃 老師：喘一下再跳！");return}dz.t=t;dz.on=1;S.f=Math.min(100,S.f+10);
+say("💃 你跟健康老師一起跳起來了！專注力 +10");say3("一二三四！二二三四！",tc.position.x,2.35,tc.position.z);gc("midterm-dance","跟老師跳舞")}
+// 後空翻：鴿子站起來、跳起來翻一圈、落地鞠躬
+pg2.rotation.order="YXZ";const bf={t:-99},pgLeg=[-.04,.04].map(x=>{const m=add(Cy(.008,.008,.12),0xffa53a,x,-.12,0,pg2);m.visible=false;return m});
+function flip(){const t=performance.now()/1000;if(t-bf.t<2)return;bf.t=t;say3("咕！後空翻（10.0 分）",-3.5,2.05,-.3);say("🐦 鴿子站起來翻了一個後空翻，還對你鞠躬");gc("midterm-flip","鴿子後空翻")}
+const _tcAct=tc.userData.act,_pgAct=pg2.userData.act;
+tc.userData.act=h=>{if(DIS())_tcAct(h);else if(TPm())dance()};tc.userData.ok=()=>DIS()||TPm();
+pg2.userData.act=h=>{if(DIS())_pgAct(h);else if(TPm())flip()};pg2.userData.ok=()=>DIS()||TPm();
+const icD=ico("💃",0,0,0,"dance");tc.add(icD);icD.position.set(0,2.05,0);icD.scale.set(.32,.32,1);act(icD,()=>dance());icD.userData.ok=TPm;icD.userData.tol=60;
+const icF=ico("🤸",-3.7,1.65,-.3,"flip");icF.scale.set(.32,.32,1);act(icF,()=>flip());icF.userData.ok=TPm;icF.userData.tol=60;
+// 手機：拖曳丟向前排同學 → 同學假裝沒看到 → 5 秒後丟回來，螢幕上寫著這題答案
+const PH0=ph.position.clone(),phs={st:"home",t0:0,a:V3(),b:V3(),i:1,w:0,qi:-1,show:0};
+const phC=document.createElement("canvas");phC.width=128;phC.height=256;const phT=new T.CanvasTexture(phC);
+const phScr=new T.Mesh(new T.PlaneGeometry(.13,.26),new T.MeshBasicMaterial({map:phT}));phScr.rotation.x=-P/2;phScr.position.y=.016;phScr.visible=false;ph.add(phScr);
+function phDraw(big,small){const g=phC.getContext("2d");g.fillStyle="#fffbe6";g.fillRect(0,0,128,256);g.fillStyle="#d63a2f";g.textAlign="center";g.font="bold 110px sans-serif";g.fillText(big,64,150);g.fillStyle="#17261f";g.font="bold 22px sans-serif";g.fillText(small,64,210);phT.needsUpdate=true}
+function phHome(){phs.st="home";ph.position.copy(PH0);ph.rotation.set(0,.3,0)}
+const phOk=()=>TPm()&&phs.st=="home";ph.userData.ok=phOk;ICS.filter(s=>s.userData.k=="p").forEach(s=>{s.userData.ok=phOk});
+el.addEventListener("pointerdown",e=>{if(!dn||dn.g||dn.c||!TPm()||phs.st!="home")return;if(near(e,ph,48))dn.ph=1});
+$("v").addEventListener("pointermove",e=>{if(!dn||!dn.ph||e.pointerId!=dn.pid)return;dn.mv=Math.max(dn.mv,Math.hypot(e.clientX-dn.sx,e.clientY-dn.sy)/1.4);if(dn.mv>=10){phs.st="drag";ray(e);rc.ray.at(1.6,ph.position);ph.rotation.z=.5}e.stopPropagation()},true);
+$("v").addEventListener("pointerup",e=>{if(!dn||!dn.ph||e.pointerId!=dn.pid||dn.mv<10)return;e.stopPropagation();dn=null;phDrop(e)},true);
+function phDrop(e){ray(e);const h=rc.intersectObjects(HIT)[0];if(!h||!S.run){phs.st="home";return}
+if(fm){say("🎧 專心模式不能作弊，手機被收起來了");phs.st="home";return}
+const i=h.object===HIT[0]?1:2;phs.i=i;phs.st="fly";phs.t0=performance.now()/1000;phs.a.copy(ph.position);phs.b.set(cm[i][0],1.25,cm[i][1]+.65);phs.w=0;gc("midterm-phone-throw","手機砸同學")}
+function phReveal(){const q=S.run&&S.qs&&S.qs[S.qi];
+if(!q){phDraw("？","考完了還想作弊");say("📱 手機被丟回來了，上面寫著：考完了還想作弊？");}
+else{const L="ABC"[q[2]];phDraw(L,"這題選 "+L);say("📱 手機被丟回來了，螢幕上寫著："+L+". "+q[1][q[2]]);S.ch=S.qi;S.cn=(S.cn||0)+1;paint();phs.qi=S.qi}
+phScr.visible=true;phs.show=performance.now()/1000}
+const _fP=fx;fx=(tm,dt)=>{_fP(tm,dt);
+// 跳舞
+const du=tm-dz.t;if(du<4){const s=Math.abs(Math.sin(du*7)),dx=0-tc.position.x,dzz=.85-tc.position.z;tc.rotation.set(0,Math.atan2(-dx,-dzz),0);aL.rotation.set(0,0,-2.6*s);aR.rotation.set(0,0,2.6*s);tc.position.y+=.14*s;st.position.y=.12*s;st.rotation.y=.45*Math.sin(du*7)}
+else if(dz.on){dz.on=0;st.position.y=0;st.rotation.y=0}
+// 後空翻
+const bu=tm-bf.t;if(bu<1.8){const up=Math.min(1,bu/.3);pg2.scale.set(1.6,1.6*(1+.3*up),1.6);pgLeg.forEach(m=>m.visible=true);
+if(bu<.3){pg2.position.y=1.1+.05*up;pg2.rotation.x=0}else if(bu<1.1){const u=(bu-.3)/.8;pg2.position.y=1.15+.55*Math.sin(u*P);pg2.rotation.x=-2*P*u}else{pg2.position.y=1.15;pg2.rotation.x=.45*Math.sin((bu-1.1)/.7*P)}}
+else if(pgLeg[0].visible){pgLeg.forEach(m=>m.visible=false);pg2.position.y=1.1;pg2.rotation.x=0}
+// 手機
+const pu=tm-phs.t0;
+if(phs.st=="drag"&&!(dn&&dn.ph))phs.st="home";
+if(phs.st=="home"&&!(dn&&dn.ph&&dn.mv>=10)){ph.position.lerp(PH0,Math.min(1,dt*8));ph.rotation.z*=.85;ph.rotation.x*=.85}
+else if(phs.st=="fly"){const u=Math.min(1,pu/.45);ph.position.lerpVectors(phs.a,phs.b,u);ph.position.y+=Math.sin(u*P)*.35;ph.rotation.x+=dt*14;
+if(u>=1){phs.st="bonk";phs.t0=tm;phs.a.copy(phs.b);phs.b.set(cm[phs.i][0],.79,cm[phs.i][1]);say3("……（假裝沒看到）",cm[phs.i][0],1.75,cm[phs.i][1]+.65);say("📱 砸中了！同學假裝什麼都沒發生…")}}
+else if(phs.st=="bonk"){const u=Math.min(1,pu/.3);ph.position.lerpVectors(phs.a,phs.b,u);ph.rotation.x*=.8;if(u>=1){phs.st="away";phs.t0=tm;ph.rotation.set(0,1.2,0)}}
+else if(phs.st=="away"){if(pu>2.1&&!phs.w){phs.w=1;say3("（吹口哨）🎵",cm[phs.i][0],1.75,cm[phs.i][1]+.65)}
+if(pu>=4.7){phs.st="back";phs.t0=tm;phs.a.copy(ph.position);say3("還你啦！",cm[phs.i][0],1.75,cm[phs.i][1]+.65)}}
+else if(phs.st=="back"){const u=Math.min(1,pu/.6);ph.position.lerpVectors(phs.a,PH0,u);ph.position.y+=Math.sin(u*P)*.8;ph.rotation.x-=dt*16;if(u>=1){phHome();phReveal()}}
+if(phScr.visible&&(tm-phs.show>8||(phs.qi>=0&&S.qi!==phs.qi)||!S.run&&phs.qi>=0)){phScr.visible=false;phs.qi=-1}
+ICS.forEach(s=>{if(s.userData.k=="p"&&phs.st!="home")s.visible=false});
+icD.visible=icF.visible=TPm()};
 
 // ===== GoatCounter 事件：看玩家實際選哪些科系、有沒有考完、有沒有戴耳機 =====
 function gc(p,t){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:p,title:t||p,event:true})}catch(_){}}
