@@ -518,6 +518,7 @@ const sm=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
 const _fF=fx;fx=(tm,dt)=>{_fF(tm,dt);[1,2].forEach(i=>{const g=FG[i],r=RX[i];if(!r){g.visible=false;return}const w=tm-r;if(w>5.6){g.visible=false;return}const p=cm[i],k=Math.exp(-w*3);g.visible=true;g.position.set(p[0]+Math.sin(w*40)*.03*k,1.2+.02*Math.sin(tm*2+i*1.7)+.18*Math.abs(Math.sin(w*9))*k,p[1]+.65);g.rotation.y=P*(w<5?sm((w-.25)/.5):1-sm((w-5)/.5))})};
 
 // ===== 錯題回報箱（黑板下方）=====
+let rptN=0;
 const RPG=new T.Group();RPG.position.set(0,.33,-3.78);sc.add(RPG);
 add(Bx(.62,.4,.22),0xd63a2f,0,0,0,RPG);add(Bx(.7,.05,.26),0xa82c24,0,.225,0,RPG);add(Bx(.38,.03,.02),0x2a1210,0,.12,.112,RPG);
 const rlc=cvs(256,112,g=>{g.fillStyle="#d63a2f";g.fillRect(0,0,256,112);g.fillStyle="#fff";g.textAlign="center";g.font="bold 54px sans-serif";g.fillText("錯題",128,52);g.font="bold 40px sans-serif";g.fillText("回報箱",128,100)});
