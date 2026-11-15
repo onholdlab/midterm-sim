@@ -79,7 +79,7 @@ html{height:calc(100% + 2px)!important}
   document.addEventListener('touchstart',keep,{passive:true,capture:true});
 })();
 </script>
-<script src="https://onholdlab.github.io/js/feedback.js" defer></script>
+<script src="https://onholdlab.com/js/feedback.js" defer></script>
 <script data-goatcounter="https://onholdlab.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -535,7 +535,7 @@ rE("#rs").onclick=()=>{const m=rE("#rm"),i=+rE("#rq").value,q=(S.qs||[])[i],note
 if(!q&&!note){m.style.color="#d63a2f";m.textContent="請在說明中寫出是哪一題";return}
 if(rptN>=5){m.style.color="#d63a2f";m.textContent="回報次數太多了，稍後再試";return}
 const row={game:"期中考模擬",dept_course:S.sub||"",kind:rE("#rk").value,question:q?q[0]+"\n"+q[1].map((o,k)=>"ABC"[k]+". "+o).join("\n")+"\n[遊戲標示正解："+"ABC"[q[2]]+". "+q[1][q[2]]+"]":"",note};
-const msg=["【"+row.kind+"】"+(row.dept_course||"（未選科目）"),row.question,row.note?"說明："+row.note:""].filter(Boolean).join("\n");if(!window.OHLFeedback){m.style.color="#d63a2f";m.textContent="回報箱暫時連不上，請稍後再試";return}rE("#rs").disabled=true;m.style.color="#17261f";m.textContent="送出中…";OHLFeedback.send({source:"midterm-sim",kind:"bug",message:msg}).then(r=>{if(r.ok){rptN++;gc("midterm-report");rE("#rn").value="";m.style.color="#1f6f5c";m.textContent="✔ 已收到，謝謝你幫忙抓錯！";setTimeout(()=>{rpm.hidden=true},1400)}else{rE("#rs").disabled=false;m.style.color="#d63a2f";m.textContent=r.reason=="rate_limited"?"回報太頻繁了，等一下再送":"送出失敗，請稍後再試"}})};
+const msg=["【"+row.kind+"】"+(row.dept_course||"（未選科目）"),row.question,row.note?"說明："+row.note:""].filter(Boolean).join("\n");if(msg.length>2000){m.style.color="#d63a2f";m.textContent="題目與說明合計超過 2,000 字，請縮短說明再送出（內容尚未送出）。";return}if(!window.OHLFeedback){m.style.color="#d63a2f";m.textContent="回報箱暫時連不上，請稍後再試";return}rE("#rs").disabled=true;m.style.color="#17261f";m.textContent="送出中…";OHLFeedback.send({source:"midterm-sim",kind:"bug",message:msg}).then(r=>{if(r.ok){rptN++;gc("midterm-report");rE("#rn").value="";m.style.color="#1f6f5c";m.textContent="✔ 已收到，謝謝你幫忙抓錯！";setTimeout(()=>{rpm.hidden=true},1400)}else{rE("#rs").disabled=false;m.style.color="#d63a2f";m.textContent=r.reason=="rate_limited"?"回報太頻繁了，等一下再送":"送出失敗，請稍後再試"}})};
 
 // ===== 結算卡片 3.5 秒後（或一碰畫面）縮成一行，不擋黑板選項 =====
 function rcol(){if(S.run||$("res").hidden||S.col)return;S.col=1;$("rt").innerHTML='<div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap"><b style="font-size:22px">'+S.sc*10+' 分</b><span>答對 '+S.sc+' / '+S.qs.length+'</span><span style="opacity:.7;font-size:13px">點黑板選科目再考一次</span></div>'}
